@@ -1,3 +1,17 @@
 scala-formol
 ============
 
+Configurando e executando
+-------------------------
+
+- Instalar Scala IDE (Plugin Eclipse)
+  http://scala-ide.org/
+
+- Instalar Play framework 2.0
+  http://www.playframework.org/
+
+- Ir em [File > Import > Git > Projects from Git] e clonar o repositório:
+  https://github.com/danilofes/scala-formol.git
+
+- Configurar o projeto baixado de acordo com as instruções:
+  http://scala-ide.org/docs/tutorials/play20scalaide20/#Configuring_the_Play_2_0_web_application_for_Scala_IDE
