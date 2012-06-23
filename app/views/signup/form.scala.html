@@ -7,7 +7,31 @@
     Registre-se
 }
 
-@main(title, nav = "signup") {
+@scripts = {
+  <script type="text/javascript">
+    $(document).ready(function(){
+      
+      // Estado inicial dos campos
+      $("#state").attr("disabled", "disabled");
+
+      // Eventos
+      $("#country").change(function(e) {
+        var country = e.target.value;
+        if (country) {
+          $("#state").removeAttr("disabled");
+        } else {
+          $("#state").attr("disabled", "disabled");
+          $("#state").attr("value", "");
+        }
+        $("#state").load(encodeURI("@routes.SignUp.listStates("")" + country));
+      });
+      
+    });
+
+  </script>
+}
+
+@main(title, nav = "signup", scripts) {
     
     @helper.form(action = routes.SignUp.submit) {
         
@@ -44,18 +68,13 @@
                 signupForm("country"), 
                 options = options(Countries.list),
                 '_default -> "--- Selecione o país ---",
-                '_label -> "País",
-                '_error -> signupForm("profile.country").error.map(_.withMessage("Selecione seu país"))
+                '_label -> "País"
             )
-            
-        </fieldset>
-        
-        <fieldset>
-            
-            @checkbox(
-                signupForm("accept"), 
-                '_label -> None, '_text -> "Concordo com os termos do serviço",
-                '_showConstraints -> false
+
+            @select(
+              signupForm("state"), 
+              options = Seq(),
+              '_label -> "Estado"
             )
             
         </fieldset>

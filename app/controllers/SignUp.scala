@@ -32,24 +32,18 @@ object SignUp extends Controller {
       
       "country" -> nonEmptyText,
       "state" -> nonEmptyText,
-      "city" -> nonEmptyText,
-      
-      "accept" -> checked("You must accept the conditions")
+      "city" -> nonEmptyText
       
     )
     // A assinatura do formulário não é identica ao da classe User, portanto é necessário custom binding/unbinding
     {
       // Mapeamento formulário -> User
-      (username, passwords, country, state, city, _) => User(username, passwords._1, country, state, city) 
+      (username, passwords, country, state, city) => User(username, passwords._1, country, state, city) 
     }
     {
       // Mapeamento User -> formulário
-      user => Some(user.username, (user.password, ""), user.country, user.state, user.city, false)
-    }.verifying(
-      // Add an additional constraint: The username must not be taken (you could do an SQL request here)
-      "This username is not available",
-      user => !Seq("admin", "guest").contains(user.username)
-    )
+      user => Some(user.username, (user.password, ""), user.country, user.state, user.city)
+    }
   )
   
   /**
@@ -72,4 +66,7 @@ object SignUp extends Controller {
     )
   }
   
+  def listStates(country: String) = Action {
+    Ok(html.signup.options(States.list(country)))
+  }
 }
