@@ -1,0 +1,8 @@
+@(field: formol.SelectFieldModel)
+@fieldWrapper(field) {
+  <select id="@field.name" name="@field.name" >
+  @field.options.map { option => 
+    <option value="@option">@option</option>
+  }
+  </select>
+}

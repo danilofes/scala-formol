@@ -15,9 +15,17 @@
     <fieldset>
     <legend>Informações da conta</legend>
     @renderField(signUpform("username"))
-
+    @renderField(signUpform("password_main"))
+    @renderField(signUpform("password_confirm"))
     </fieldset>
-        
+
+    <fieldset>
+    <legend>Outras informações</legend>
+    @renderField(signUpform("country"))
+    @renderField(signUpform("state"))
+    @renderField(signUpform("city"))
+    </fieldset>
+    
     <div class="actions">
     <input type="submit" class="btn primary" value="Registrar">
     <a href="@routes.Application.index" class="btn">Cancelar</a>

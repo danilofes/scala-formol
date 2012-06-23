@@ -1,0 +1,9 @@
+@(field: formol.FieldModel)(inputTag: Html)
+<div class="clearfix" id="@{field.name}_field">
+  <label for="@field.name">@field.label</label>
+  <div class="input">
+    @inputTag
+    <span class="help-inline"></span>
+    <span class="help-block"></span> 
+  </div>
+</div>

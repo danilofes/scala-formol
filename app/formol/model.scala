@@ -8,4 +8,7 @@ object model {
   object text {
     def field(name: String) = TextFieldModel(name)
   }
+  object select {
+    def field(name: String) = SelectFieldModel(name)
+  }
 }
