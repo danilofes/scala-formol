@@ -11,7 +11,7 @@ POST    /signup                     controllers.SignUp.submit
 GET     /signup/states              controllers.SignUp.listStates(country: String)
 
 # Signup 2
-GET     /signup2                    controllers.SignUp2.form
+GET     /signup2                    controllers.SignUp2.signUp
 POST    /signup2                    controllers.SignUp2.submit
 
 # Map static resources from the /public folder to the /assets URL path

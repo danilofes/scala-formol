@@ -1,7 +1,8 @@
-@()
+@(signUpform: formol.FormModel)
 
 @import helper._
 @import helper.twitterBootstrap._
+@import formol.viewHelper._
 
 @title = {
     Registre-se
@@ -9,29 +10,19 @@
 
 @main(title, nav = "signup2") {
     
-    @helper.form(action = routes.SignUp2.submit) {
+  @helper.form(action = routes.SignUp2.submit) {
         
-        <fieldset>
-            <legend>Informações da conta</legend>
-            
-        </fieldset>
+    <fieldset>
+    <legend>Informações da conta</legend>
+    @renderField(signUpform("username"))
+
+    </fieldset>
         
-        <fieldset>
-            
-            <legend>Outras informações</legend>
-            
-        </fieldset>
+    <div class="actions">
+    <input type="submit" class="btn primary" value="Registrar">
+    <a href="@routes.Application.index" class="btn">Cancelar</a>
+    </div>
         
-        <fieldset>
-            
-            
-        </fieldset>
-        
-        <div class="actions">
-            <input type="submit" class="btn primary" value="Registrar">
-            <a href="@routes.Application.index" class="btn">Cancelar</a>
-        </div>
-        
-    }
+  }
     
 }
