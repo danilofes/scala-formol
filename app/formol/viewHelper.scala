@@ -10,4 +10,8 @@ object viewHelper {
     case _ => Html("<div>TODO</div>")
   }
 
+  def bindEvents(form: FormModel) = {
+    val jsBuilder = new JsExpressionBuilder()
+    formol.html.initScript(form, jsBuilder)
+  }
 }

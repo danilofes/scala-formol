@@ -1,6 +1,9 @@
 @(field: formol.SelectFieldModel)
 @fieldWrapper(field) {
   <select id="@field.name" name="@field.name" >
+  @if(!field.emptyOption.isEmpty) {
+    <option class="blank" value="">@field.emptyOption</option>
+  }
   @field.options.map { option => 
     <option value="@option">@option</option>
   }

@@ -11,4 +11,5 @@ object model {
   object select {
     def field(name: String) = SelectFieldModel(name)
   }
+  implicit def valueOf(fieldName: String) = new FieldValue(fieldName)
 }

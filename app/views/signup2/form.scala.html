@@ -8,7 +8,7 @@
     Registre-se
 }
 
-@main(title, nav = "signup2") {
+@main(title, nav = "signup2", bindEvents(signUpform)) {
     
   @helper.form(action = routes.SignUp2.submit) {
         

@@ -1,0 +1,12 @@
+@(form: formol.FormModel, jsBuilder: formol.JsExpressionBuilder)
+<script type="text/javascript">
+$(document).ready(function() {
+    @form.fields.values.map { field =>
+      if ( @field.enablingCondition.evaluate(jsBuilder) ) {
+        $('#@field.name').removeAttr('disabled');
+      } else {
+        $('#@field.name').attr('disabled', 'disabled');
+      }
+    }
+});
+</script>
