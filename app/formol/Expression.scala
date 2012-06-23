@@ -26,6 +26,7 @@ object Boolean {
 }
 
 class NotEmpty(operand: StringExpression) extends BooleanExpression {
+  override def dependencies = operand.dependencies
   override def evaluate[R](evaluator: Evaluator[R]) = {
     val reduced = operand.evaluate(evaluator)
         evaluator.notEmpty(reduced)
