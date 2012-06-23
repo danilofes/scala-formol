@@ -18,7 +18,10 @@
                     <a class="brand" href="@routes.Application.index()">Formulários</a>
                     <ul class="nav">
                         <li class="@("active".when(nav == "signup"))">
-                            <a href="@routes.SignUp.form">Registre-se</a>
+                            <a href="@routes.SignUp.form">Registro</a>
+                        </li>
+                        <li class="@("active".when(nav == "signup2"))">
+                            <a href="@routes.SignUp2.form">Registro 2</a>
                         </li>
                     </ul>
                 </div>
