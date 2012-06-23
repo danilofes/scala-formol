@@ -9,9 +9,9 @@
 }
 
 @main(title, nav = "signup2", bindEvents(signUpform)) {
-    
+  
   @helper.form(action = routes.SignUp2.submit) {
-        
+    
     <fieldset>
     <legend>Informações da conta</legend>
     @renderField(signUpform("username"))
@@ -20,17 +20,23 @@
     </fieldset>
 
     <fieldset>
-    <legend>Outras informações</legend>
+    <legend>Localização</legend>
     @renderField(signUpform("country"))
     @renderField(signUpform("state"))
     @renderField(signUpform("city"))
+    </fieldset>
+
+    <fieldset>
+    <legend>Outras informações</legend>
+    @renderField(signUpform("type"))
+    @renderField(signUpform("cnpj"))
     </fieldset>
     
     <div class="actions">
     <input type="submit" class="btn primary" value="Registrar">
     <a href="@routes.Application.index" class="btn">Cancelar</a>
     </div>
-        
-  }
     
+  }
+  
 }

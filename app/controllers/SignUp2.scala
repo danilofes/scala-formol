@@ -25,7 +25,15 @@ object SignUp2 extends Controller {
     select field "state"
       enabledWhen (valueOf("country") isNotEmpty),
     
-    select field "city"
+    select field "city",
+    
+    select field "type"
+      label "Tipo de cadastro"
+      options List("PF", "PJ"),
+      
+    text field "cnpj"
+      label "CNPJ"
+      availableWhen (valueOf("type") isEquals "PJ")
   )
   
   def signUp = Action {

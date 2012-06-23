@@ -12,6 +12,13 @@ abstract class FieldModel(val name: String) {
     this.enablingCondition = condition
     this
   }
+
+  var availabilityCondition: BooleanExpression = Boolean.True
+  def availableWhen(condition: BooleanExpression): this.type = {
+    this.availabilityCondition = condition
+    this
+  }
+
 }
 
 case class TextFieldModel(override val name: String) extends FieldModel(name) {

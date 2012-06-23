@@ -13,6 +13,18 @@ $(document).ready(function() {
         $('#@dependency').change(enablingFn);
       }
       enablingFn();
+      
+      var hideFn = function() {
+        if ( @field.availabilityCondition.evaluate(jsBuilder) ) {
+          $('#@{field.name}_field').show();
+        } else {
+          $('#@{field.name}_field').hide();
+        }
+      }
+      @field.availabilityCondition.dependencies.map { dependency =>
+        $('#@dependency').change(hideFn);
+      }
+      hideFn();
     }
 });
 </script>
