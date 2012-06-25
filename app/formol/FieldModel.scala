@@ -19,6 +19,12 @@ abstract class FieldModel(val name: String) {
     this
   }
 
+  var validations: List[Tuple2[BooleanExpression, String]] = List()
+  def invalidWhen(validation: Tuple2[BooleanExpression, String]): this.type = {
+    validations = validation :: validations
+    this
+  }
+
 }
 
 case class TextFieldModel(override val name: String) extends FieldModel(name) {

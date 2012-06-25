@@ -12,5 +12,6 @@ object model {
     def field(name: String) = SelectFieldModel(name)
   }
   def valueOf(fieldName: String) = new FieldValue(fieldName)
+  val self = SelfValue
   implicit def stringLiteral(value: String) = new StringLiteral(value)
 }

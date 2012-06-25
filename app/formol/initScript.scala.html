@@ -1,30 +1,53 @@
-@(form: formol.FormModel, jsBuilder: formol.JsExpressionBuilder)
+@(form: formol.FormModel)
+
+@import formol.jsHelper._
+
 <script type="text/javascript">
 $(document).ready(function() {
     @form.fields.values.map { field =>
+      
+      // enabledWhen
       var enablingFn = function() {
-        if ( @field.enablingCondition.evaluate(jsBuilder) ) {
+        if (@jsExpression(field, field.enablingCondition)) {
           $('#@field.name').removeAttr('disabled');
         } else {
           $('#@field.name').attr('disabled', 'disabled');
         }
       }
-      @field.enablingCondition.dependencies.map { dependency =>
+      @dependencies(field, field.enablingCondition).map { dependency =>
         $('#@dependency').change(enablingFn);
       }
       enablingFn();
       
+      // availableWhen
       var hideFn = function() {
-        if ( @field.availabilityCondition.evaluate(jsBuilder) ) {
+        if (@jsExpression(field, field.availabilityCondition)) {
           $('#@{field.name}_field').show();
         } else {
           $('#@{field.name}_field').hide();
         }
       }
-      @field.availabilityCondition.dependencies.map { dependency =>
+      @dependencies(field, field.availabilityCondition).map { dependency =>
         $('#@dependency').change(hideFn);
       }
       hideFn();
+      
+      // invalidWhen
+      @field.validations.map { validation =>
+        var invalidFn = function() {
+          if (@jsExpression(field, validation._1)) {
+            $('#@{field.name}_field').addClass('error');
+            $('#@{field.name}_field span.help-inline').html('@validation._2');
+          } else {
+            $('#@{field.name}_field').removeClass('error');
+            $('#@{field.name}_field span.help-inline').html('');
+          }
+        }
+        @dependencies(field, validation._1).map { dependency =>
+          $('#@dependency').change(invalidFn);
+        }
+      }
+      
     }
 });
 </script>

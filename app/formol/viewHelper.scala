@@ -1,6 +1,7 @@
 package formol
 
 import play.api.templates.Html
+import scala.collection.immutable.HashSet
 
 object viewHelper {
 
@@ -10,8 +11,5 @@ object viewHelper {
     case _ => Html("<div>TODO</div>")
   }
 
-  def bindEvents(form: FormModel) = {
-    val jsBuilder = new JsExpressionBuilder()
-    formol.html.initScript(form, jsBuilder)
-  }
+  def bindEvents(form: FormModel) = formol.html.initScript(form)
 }
