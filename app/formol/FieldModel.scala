@@ -25,6 +25,9 @@ abstract class FieldModel(val name: String) {
     this
   }
 
+  var inputValue: String = ""
+  var message: String = ""
+  var valid: Boolean = true
 }
 
 case class TextFieldModel(override val name: String) extends FieldModel(name)

@@ -1,4 +1,4 @@
 @(field: formol.TextFieldModel)
 @fieldWrapper(field) {
-  <input type="text" id="@field.name" name="@field.name" value="" >
+  <input type="text" id="@field.name" name="@field.name" value="@Html(field.inputValue)" >
 }

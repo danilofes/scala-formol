@@ -1,9 +1,9 @@
 @(field: formol.FieldModel)(inputTag: Html)
-<div class="clearfix" id="@{field.name}_field">
+<div class="clearfix @{if (!field.valid) "error"}" id="@{field.name}_field">
   <label for="@field.name">@field.label</label>
   <div class="input">
     @inputTag
-    <span class="help-inline"></span>
-    <span class="help-block"></span> 
+    <span class="help-inline">@field.message</span>
+    <span class="help-block"></span>
   </div>
 </div>

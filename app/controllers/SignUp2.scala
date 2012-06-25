@@ -8,7 +8,7 @@ import models.Countries
 
 object SignUp2 extends Controller {
   
-  val signUpForm = form(
+  def signUpForm = form(
     text field "username"
       label "Login",
       
@@ -42,11 +42,16 @@ object SignUp2 extends Controller {
   )
   
   def signUp = Action {
-    Ok(html.signup2.form(signUpForm));
+    Ok(html.signup2.form(signUpForm))
   }
   
-  def submit = Action {
-    Ok("TODO")
+  def submit = Action { request =>
+    val submitedForm = signUpForm.fillFromRequest(request)
+    if (submitedForm.isValid) {
+      Ok(html.signup2.success())
+    } else {
+      Ok(html.signup2.form(submitedForm))
+    }
   }
   
 }
