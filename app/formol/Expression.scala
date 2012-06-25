@@ -3,7 +3,7 @@ package formol
 import scala.collection.immutable.Set
 import scala.collection.immutable.HashSet
 
-abstract class Expression {
+trait Expression {
   def evaluate[R](evaluator: Evaluator[R]): R
 }
 
@@ -12,9 +12,18 @@ trait Evaluator[R] {
   def resolveSelf(): R
   def booleanLiteral(value: Boolean): R
   def stringLiteral(value: String): R
+  def intLiteral(value: Int): R
   def notEmpty(value: R): R
   def equals(v1: R, v2: R): R
   def notEquals(v1: R, v2: R): R
+  def length(value: R): R
+  def lessThan(v1: R, v2: R): R
+}
+
+trait ComparableExpression extends Expression {
+  def isEquals(other: ComparableExpression) = new Equals(this, other)
+  def isNotEquals(other: ComparableExpression) = new NotEquals(this, other)
+  def isLessThan(other: ComparableExpression) = new LessThan(this, other)
 }
 
 abstract class BooleanExpression extends Expression
@@ -34,7 +43,7 @@ class NotEmpty(operand: StringExpression) extends BooleanExpression {
   }
 }
 
-class Equals(operand1: StringExpression, operand2: StringExpression) extends BooleanExpression {
+class Equals(operand1: ComparableExpression, operand2: ComparableExpression) extends BooleanExpression {
   override def evaluate[R](evaluator: Evaluator[R]) = {
     val reduced1 = operand1.evaluate(evaluator)
     val reduced2 = operand2.evaluate(evaluator)
@@ -42,7 +51,7 @@ class Equals(operand1: StringExpression, operand2: StringExpression) extends Boo
   }
 }
 
-class NotEquals(operand1: StringExpression, operand2: StringExpression) extends BooleanExpression {
+class NotEquals(operand1: ComparableExpression, operand2: ComparableExpression) extends BooleanExpression {
   override def evaluate[R](evaluator: Evaluator[R]) = {
     val reduced1 = operand1.evaluate(evaluator)
     val reduced2 = operand2.evaluate(evaluator)
@@ -50,10 +59,17 @@ class NotEquals(operand1: StringExpression, operand2: StringExpression) extends 
   }
 }
 
-abstract class StringExpression extends Expression {
+class LessThan(operand1: ComparableExpression, operand2: ComparableExpression) extends BooleanExpression {
+  override def evaluate[R](evaluator: Evaluator[R]) = {
+    val reduced1 = operand1.evaluate(evaluator)
+    val reduced2 = operand2.evaluate(evaluator)
+    evaluator.lessThan(reduced1, reduced2)
+  }
+}
+
+abstract class StringExpression extends ComparableExpression {
   def isNotEmpty = new NotEmpty(this)
-  def isEquals(other: StringExpression) = new Equals(this, other)
-  def isNotEquals(other: StringExpression) = new NotEquals(this, other)
+  def length = new StringLength(this)
 }
 
 class FieldValue(fieldName: String) extends StringExpression {
@@ -71,5 +87,20 @@ object SelfValue extends StringExpression {
 class StringLiteral(value: String) extends StringExpression {
   override def evaluate[R](evaluator: Evaluator[R]) = {
     evaluator.stringLiteral(value)
+  }
+}
+
+abstract class IntExpression extends ComparableExpression
+
+class StringLength(expr: StringExpression) extends IntExpression {
+  override def evaluate[R](evaluator: Evaluator[R]) = {
+    val reduced = expr.evaluate(evaluator)
+    evaluator.length(reduced)
+  }
+}
+
+class IntLiteral(value: Int) extends IntExpression {
+  override def evaluate[R](evaluator: Evaluator[R]) = {
+    evaluator.intLiteral(value)
   }
 }

@@ -12,12 +12,13 @@ object SignUp2 extends Controller {
     text field "username"
       label "Login",
       
-    text field "password_main"
-      label "Senha",
+    password field "password_main"
+      label "Senha"
+      invalidWhen (value.length isLessThan 6) -> "Senha deve ter mínimo de 6 caracteres",
 
-    text field "password_confirm"
+    password field "password_confirm"
       label "Confirme a senha"
-      invalidWhen (self isNotEquals valueOf("password_main")) -> "Confirmação não é igual a senha.",
+      invalidWhen (value isNotEquals valueOf("password_main")) -> "Confirmação não é igual a senha",
       
     select field "country"
       label "País"

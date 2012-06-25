@@ -27,9 +27,9 @@ abstract class FieldModel(val name: String) {
 
 }
 
-case class TextFieldModel(override val name: String) extends FieldModel(name) {
-  
-}
+case class TextFieldModel(override val name: String) extends FieldModel(name)
+
+case class PasswordFieldModel(override val name: String) extends FieldModel(name)
 
 case class SelectFieldModel(override val name: String) extends FieldModel(name) {
   var options: Seq[String] = Seq()
