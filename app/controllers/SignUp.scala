@@ -67,10 +67,10 @@ object SignUp extends Controller {
   }
   
   def listStates(country: String) = Action {
-    Ok(html.signup.options(States.list(country)))
+    Ok(html.signup.options(States.list(country), "--- Selecione o estado ---"))
   }
 
   def listCities(state: String) = Action {
-    Ok(html.signup.options(Cities.list(state)))
+    Ok(html.signup.options(Cities.list(state), "--- Selecione a cidade ---"))
   }
 }

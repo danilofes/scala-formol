@@ -12,6 +12,8 @@ $(document).ready(function() {
           $('#@field.name').removeAttr('disabled');
         } else {
           $('#@field.name').attr('disabled', 'disabled');
+          $('#@field.name').attr('value', '');
+          $('#@field.name').change();
         }
       }
       @dependencies(field, field.enablingCondition).map { dependency =>
@@ -25,6 +27,8 @@ $(document).ready(function() {
           $('#@{field.name}_field').show();
         } else {
           $('#@{field.name}_field').hide();
+          $('#@field.name').attr('value', '');
+          $('#@field.name').change();
         }
       }
       @dependencies(field, field.availabilityCondition).map { dependency =>
