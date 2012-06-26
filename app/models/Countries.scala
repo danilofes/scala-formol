@@ -13,6 +13,7 @@ object States {
   
   def list(country: String) = country match {
     case "Brasil" => List(
+      "Espírito Santo",
       "Minas Gerais",
       "Rio de Janeiro",
       "São Paulo"
