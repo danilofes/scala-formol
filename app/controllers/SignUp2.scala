@@ -27,10 +27,13 @@ object SignUp2 extends Controller {
     
     select field "state"
       label "Estado / Província"
-      enabledWhen (valueOf("country") isNotEmpty),
+      enabledWhen (valueOf("country") isNotEmpty)
+      options (routes.SignUp.listStates, valueOf("country")),
     
     select field "city"
-      label "Cidade",
+      label "Cidade"
+      enabledWhen (valueOf("state") isNotEmpty)
+      options (routes.SignUp.listCities, valueOf("state")),
     
     select field "type"
       label "Tipo de cadastro"

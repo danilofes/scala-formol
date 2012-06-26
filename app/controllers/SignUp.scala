@@ -69,4 +69,8 @@ object SignUp extends Controller {
   def listStates(country: String) = Action {
     Ok(html.signup.options(States.list(country)))
   }
+
+  def listCities(state: String) = Action {
+    Ok(html.signup.options(Cities.list(state)))
+  }
 }

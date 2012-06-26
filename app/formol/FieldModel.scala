@@ -1,5 +1,7 @@
 package formol
 
+import play.api.mvc.Call
+
 abstract class FieldModel(val name: String) {
   var label: String = name
   def label(label: String): this.type = {
@@ -46,4 +48,13 @@ case class SelectFieldModel(override val name: String) extends FieldModel(name) 
     this.emptyOption = text
     this
   }
+  
+  var dynamicOptions: OptionsLoader = null
+  def options(routeFn: String => Call, arg: FieldValue): this.type = {
+    val url = routeFn("_0_").toString().replaceFirst("_0_", "{0}")
+    this.dynamicOptions = OptionsLoader(url, arg)
+    this
+  }
 }
+
+case class OptionsLoader(url: String, args: FieldValue*)

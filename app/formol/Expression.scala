@@ -72,7 +72,7 @@ abstract class StringExpression extends ComparableExpression {
   def length = new StringLength(this)
 }
 
-class FieldValue(fieldName: String) extends StringExpression {
+class FieldValue(val fieldName: String) extends StringExpression {
   override def evaluate[R](evaluator: Evaluator[R]) = {
     evaluator.resolveField(fieldName)
   }

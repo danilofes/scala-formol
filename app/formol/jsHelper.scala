@@ -1,9 +1,9 @@
 package formol
 
 import scala.collection.immutable.HashSet
-
 import play.api.libs.json.Json
 import play.api.templates.Html
+import scala.collection.mutable.StringBuilder
 
 object jsHelper {
   
@@ -14,9 +14,38 @@ object jsHelper {
   
   def jsExpression(field: FieldModel, expr: Expression) = {
     val builder = new JsExpressionBuilder(field)
+    
+    if (field.isInstanceOf[SelectFieldModel]) {
+      field.asInstanceOf[SelectFieldModel].dynamicOptions
+    }
+    
     Html(expr.evaluate(builder))
   }
   
+  def jsOptionsUrlExpression(field: FieldModel) = {
+    val sb = new StringBuilder()
+    if (field.isInstanceOf[SelectFieldModel]) {
+      val dynamicOption = field.asInstanceOf[SelectFieldModel].dynamicOptions
+      if (dynamicOption != null) {
+        
+        sb.append("var loadFn = function() {$('#" + field.name + "').load(encodeURI(jQuery.validator.format(\"")
+        sb.append(dynamicOption.url)
+        sb.append("\"")
+        dynamicOption.args.map { arg =>
+          sb.append(", ")
+          sb.append(String.format("$('#%s').attr('value')", arg.fieldName))
+        }
+        sb.append(")))};\n")
+
+        dynamicOption.args.map { arg =>
+          sb.append("$('#" + arg.fieldName + "').change(loadFn);\n")
+          sb.append("loadFn();")
+        }
+      }
+      Html(sb.toString())
+    }
+    
+  }
 }
 
 private class JsExpressionBuilder(field: FieldModel) extends Evaluator[String] {
