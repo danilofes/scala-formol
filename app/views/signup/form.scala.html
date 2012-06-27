@@ -11,6 +11,19 @@
   <script type="text/javascript">
     $(document).ready(function(){
       
+      // Valida a confirmação de senha quando a senha ou confirmação são alteradas.
+      var validatePasswordConfirmation = function() {
+        if (!($('#password_confirm').attr('value') == $('#password_main').attr('value'))) {
+          $('#password_confirm_field').addClass('error');
+          $('#password_confirm_field span.help-inline').html('Confirmação não é igual a senha');
+        } else {
+          $('#password_confirm_field').removeClass('error');
+          $('#password_confirm_field span.help-inline').html('');
+        }
+      }
+      $('#password_confirm').change(validatePasswordConfirmation);
+      $('#password_main').change(validatePasswordConfirmation);
+      
       // Ao alterar o valor de country, recarrega as opções de state e habilita o campo caso o país esteja preenchido.
       var onChangeCountry = function() {
         var country = $('#country').attr('value');
@@ -19,7 +32,7 @@
           $('#state').load(encodeURI('@routes.SignUp.listStates("")' + country));
         } else {
           $('#state').attr('disabled', 'disabled');
-          $('#state').attr('value', '--- Selecione o estado / província ---');
+          $('#state').attr('value', '--- Selecione o estado ---');
           $('#city').attr('disabled', 'disabled');
           $('#city').attr('value', '--- Selecione a cidade ---');
         }
@@ -40,19 +53,6 @@
       };
       $('#state').change(onChangeState);
       onChangeState();
-      
-      // Valida a confirmação de senha quando a senha ou confirmação são alteradas.
-      var validatePasswordConfirmation = function() {
-        if (!($('#password_confirm').attr('value') == $('#password_main').attr('value'))) {
-          $('#password_confirm_field').addClass('error');
-          $('#password_confirm_field span.help-inline').html('Confirma&ccedil;&atilde;o n&atilde;o &eacute; igual a senha');
-        } else {
-          $('#password_confirm_field').removeClass('error');
-          $('#password_confirm_field span.help-inline').html('');
-        }
-      }
-      $('#password_confirm').change(validatePasswordConfirmation);
-      $('#password_main').change(validatePasswordConfirmation);
 
       // Alterna a exibição dos campos CPF e CNPF de acordo com o valor do tipo de cadastro.
       var swapCpfCnpj = function() {
