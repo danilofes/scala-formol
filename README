@@ -1,6 +1,8 @@
 scala-formol
 ============
 
+Formol (FORm MOdeling Language) é uma API Scala para desenvolver formulários Web no framework Play!
+
 Configurando e executando
 -------------------------
 
