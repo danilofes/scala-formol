@@ -30,6 +30,7 @@ object States {
 object Cities {
   
   def list(state: String) = state match {
+    case "Espírito Santo" => List("Vila Velha", "Vitória")
     case "Minas Gerais" => List("Belo Horizonte", "Ipatinga", "Uberaba")
     case "Rio de Janeiro" => List("Rio de Janeiro", "Petrópolis")
     case "São Paulo" => List("São Caetano", "São Paulo")
