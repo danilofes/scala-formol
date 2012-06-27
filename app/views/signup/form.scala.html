@@ -13,17 +13,31 @@
       
       // Estado inicial dos campos
       $("#state").attr("disabled", "disabled");
+      $("#city").attr("disabled", "disabled");
 
       // Eventos
       $("#country").change(function(e) {
         var country = e.target.value;
         if (country) {
           $("#state").removeAttr("disabled");
+          $("#state").load(encodeURI("@routes.SignUp.listStates("")" + country));
         } else {
           $("#state").attr("disabled", "disabled");
-          $("#state").attr("value", "");
+          $("#state").attr("value", "--- Selecione o estado / prov’ncia ---");
+          $("#city").attr("disabled", "disabled");
+          $("#city").attr("value", "--- Selecione a cidade ---");
         }
-        $("#state").load(encodeURI("@routes.SignUp.listStates("")" + country));
+      });
+      
+      $("#state").change(function(e) {
+        var state = e.target.value;
+        if (state) {
+          $("#city").removeAttr("disabled");
+        } else {
+          $("#city").attr("disabled", "disabled");
+          $("#city").attr("value", "--- Selecione a cidade ---");
+        }
+        $("#city").load(encodeURI("@routes.SignUp.listCities("")" + state));
       });
       
     });
@@ -53,7 +67,7 @@
             
             @inputPassword(
                 signupForm("password.confirm"), 
-                '_label -> "ConfirmaÃ§Ã£o de senha",
+                '_label -> "Confirme a senha",
                 '_help -> "Repita sua senha.",
                 '_error -> signupForm.error("password")
             )
@@ -74,7 +88,15 @@
             @select(
               signupForm("state"), 
               options = Seq(),
-              '_label -> "Estado"
+              '_default -> "--- Selecione o estado / prov’ncia ---",
+              '_label -> "Estado / Prov’ncia"
+            )
+            
+            @select(
+              signupForm("city"), 
+              options = Seq(),
+              '_default -> "--- Selecione a cidade ---",
+              '_label -> "Cidade"
             )
             
         </fieldset>
