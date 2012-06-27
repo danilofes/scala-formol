@@ -23,7 +23,7 @@ object SignUp2 extends Controller {
     select field "country"
       label "País"
       options Countries.list
-      emptyOption "--- Selecione um país ---",
+      emptyOption "--- Selecione o país ---",
     
     select field "state"
       label "Estado / Província"
@@ -41,7 +41,11 @@ object SignUp2 extends Controller {
       
     text field "cnpj"
       label "CNPJ"
-      availableWhen (valueOf("type") isEquals "Pessoa Jurídica")
+      availableWhen (valueOf("type") isEquals "Pessoa Jurídica"),
+
+    text field "cpf"
+      label "CPF"
+      availableWhen (valueOf("type") isEquals "Pessoa Física")
   )
   
   def signUp = Action {

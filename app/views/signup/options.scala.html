@@ -1,4 +1,7 @@
-@(options: Seq[String])
+@(options: Seq[String], emptyText: String)
+@if(!options.isEmpty) {
+  <option class="blank" value="">@emptyText</option>
+}
 @options.map { option => 
   <option value="@option" >@option</option>
 }
