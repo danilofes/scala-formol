@@ -9,13 +9,13 @@ abstract class FieldModel(val name: String) {
     this
   }
   
-  var enablingCondition: BooleanExpression = Boolean.True 
+  var enablingCondition: BooleanExpression = null
   def enabledWhen(condition: BooleanExpression): this.type = {
     this.enablingCondition = condition
     this
   }
 
-  var availabilityCondition: BooleanExpression = Boolean.True
+  var availabilityCondition: BooleanExpression = null
   def availableWhen(condition: BooleanExpression): this.type = {
     this.availabilityCondition = condition
     this

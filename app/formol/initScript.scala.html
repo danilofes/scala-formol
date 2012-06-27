@@ -5,39 +5,40 @@
 <script type="text/javascript">
 $(document).ready(function() {
     @form.fields.values.map { field =>
-      
-      // enabledWhen
-      var enablingFn = function() {
-        if (@jsExpression(field, field.enablingCondition)) {
-          $('#@field.name').removeAttr('disabled');
-        } else {
-          $('#@field.name').attr('disabled', 'disabled');
-          $('#@field.name').attr('value', '');
-          $('#@field.name').change();
+      @if(field.enablingCondition != null) {
+        // enabledWhen
+        var enablingFn = function() {
+          if (@jsExpression(field, field.enablingCondition)) {
+            $('#@field.name').removeAttr('disabled');
+          } else {
+            $('#@field.name').attr('disabled', 'disabled');
+            $('#@field.name').attr('value', '');
+            $('#@field.name').change();
+          }
         }
-      }
-      @dependencies(field, field.enablingCondition).map { dependency =>
+        @dependencies(field, field.enablingCondition).map { dependency =>
         $('#@dependency').change(enablingFn);
-      }
-      enablingFn();
-      
-      // availableWhen
-      var hideFn = function() {
-        if (@jsExpression(field, field.availabilityCondition)) {
-          $('#@{field.name}_field').show();
-        } else {
-          $('#@{field.name}_field').hide();
-          $('#@field.name').attr('value', '');
-          $('#@field.name').change();
         }
+        enablingFn();
       }
-      @dependencies(field, field.availabilityCondition).map { dependency =>
+      @if(field.availabilityCondition != null) {
+        // availableWhen
+        var hideFn = function() {
+          if (@jsExpression(field, field.availabilityCondition)) {
+            $('#@{field.name}_field').show();
+          } else {
+            $('#@{field.name}_field').hide();
+            $('#@field.name').attr('value', '');
+            $('#@field.name').change();
+          }
+        }
+        @dependencies(field, field.availabilityCondition).map { dependency =>
         $('#@dependency').change(hideFn);
+        }
+        hideFn();
       }
-      hideFn();
-      
-      // invalidWhen
       @field.validations.map { validation =>
+        // invalidWhen
         var invalidFn = function() {
           if (@jsExpression(field, validation._1)) {
             $('#@{field.name}_field').addClass('error');
@@ -51,10 +52,8 @@ $(document).ready(function() {
           $('#@dependency').change(invalidFn);
         }
       }
-      
       // dynamicOptions
       @jsOptionsUrlExpression(field)
-      
     }
 });
 </script>

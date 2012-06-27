@@ -6,7 +6,7 @@
 GET     /                           controllers.Application.index
 
 # Signup
-GET     /signup                     controllers.SignUp.form
+GET     /signup                     controllers.SignUp.signUp
 POST    /signup                     controllers.SignUp.submit
 GET     /signup/states              controllers.SignUp.listStates(country: String)
 GET     /signup/cities              controllers.SignUp.listCities(state: String)

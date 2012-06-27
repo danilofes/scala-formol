@@ -8,9 +8,13 @@ import models.Countries
 
 object SignUp2 extends Controller {
   
+  /**
+   * Definição do formulário em Formol.
+   */
   def signUpForm = form(
     text field "username"
-      label "Login",
+      label "Login"
+      invalidWhen (value isEmpty) -> "Login deve ser preenchido",
       
     password field "password_main"
       label "Senha"
@@ -26,7 +30,7 @@ object SignUp2 extends Controller {
       emptyOption "--- Selecione o país ---",
     
     select field "state"
-      label "Estado / Província"
+      label "Estado"
       enabledWhen (valueOf("country") isNotEmpty)
       options (routes.SignUp.listStates, valueOf("country")),
     
@@ -48,16 +52,22 @@ object SignUp2 extends Controller {
       availableWhen (valueOf("type") isEquals "Pessoa Física")
   )
   
+  /**
+   * Exibe o formulário vazio.
+   */
   def signUp = Action {
     Ok(html.signup2.form(signUpForm))
   }
   
+  /**
+   * Submissão do formulário.
+   */
   def submit = Action { request =>
     val submitedForm = signUpForm.fillFromRequest(request)
     if (submitedForm.isValid) {
       Ok(html.signup2.success())
     } else {
-      Ok(html.signup2.form(submitedForm))
+      BadRequest(html.signup2.form(submitedForm))
     }
   }
   

@@ -11,34 +11,63 @@
   <script type="text/javascript">
     $(document).ready(function(){
       
-      // Estado inicial dos campos
-      $("#state").attr("disabled", "disabled");
-      $("#city").attr("disabled", "disabled");
-
-      // Eventos
-      $("#country").change(function(e) {
-        var country = e.target.value;
+      // Ao alterar o valor de country, recarrega as opções de state e habilita o campo caso o país esteja preenchido.
+      var onChangeCountry = function() {
+        var country = $('#country').attr('value');
         if (country) {
-          $("#state").removeAttr("disabled");
-          $("#state").load(encodeURI("@routes.SignUp.listStates("")" + country));
+          $('#state').removeAttr('disabled');
+          $('#state').load(encodeURI('@routes.SignUp.listStates("")' + country));
         } else {
-          $("#state").attr("disabled", "disabled");
-          $("#state").attr("value", "--- Selecione o estado / prov�ncia ---");
-          $("#city").attr("disabled", "disabled");
-          $("#city").attr("value", "--- Selecione a cidade ---");
+          $('#state').attr('disabled', 'disabled');
+          $('#state').attr('value', '--- Selecione o estado / província ---');
+          $('#city').attr('disabled', 'disabled');
+          $('#city').attr('value', '--- Selecione a cidade ---');
         }
-      });
+      };
+      $('#country').change(onChangeCountry);
+      onChangeCountry();
       
-      $("#state").change(function(e) {
-        var state = e.target.value;
+      // Ao alterar o valor de state, recarrega as opções de city e habilita o campo caso o estado esteja preenchido.
+      var onChangeState = function() {
+        var state = $('#state').attr('value');
         if (state) {
-          $("#city").removeAttr("disabled");
+          $('#city').removeAttr('disabled');
         } else {
-          $("#city").attr("disabled", "disabled");
-          $("#city").attr("value", "--- Selecione a cidade ---");
+          $('#city').attr('disabled', 'disabled');
+          $('#city').attr('value', '--- Selecione a cidade ---');
         }
-        $("#city").load(encodeURI("@routes.SignUp.listCities("")" + state));
-      });
+        $('#city').load(encodeURI('@routes.SignUp.listCities("")' + state));
+      };
+      $('#state').change(onChangeState);
+      onChangeState();
+      
+      // Valida a confirmação de senha quando a senha ou confirmação são alteradas.
+      var validatePasswordConfirmation = function() {
+        if (!($('#password_confirm').attr('value') == $('#password_main').attr('value'))) {
+          $('#password_confirm_field').addClass('error');
+          $('#password_confirm_field span.help-inline').html('Confirma&ccedil;&atilde;o n&atilde;o &eacute; igual a senha');
+        } else {
+          $('#password_confirm_field').removeClass('error');
+          $('#password_confirm_field span.help-inline').html('');
+        }
+      }
+      $('#password_confirm').change(validatePasswordConfirmation);
+      $('#password_main').change(validatePasswordConfirmation);
+
+      // Alterna a exibição dos campos CPF e CNPF de acordo com o valor do tipo de cadastro.
+      var swapCpfCnpj = function() {
+        if ($('#type').attr('value') == 'Pessoa Física') {
+          $('#cpf_field').show();
+          $('#cnpj_field').hide();
+          $('#cnpj').attr('value', '');
+        } else {
+          $('#cnpj_field').show();
+          $('#cpf_field').hide();
+          $('#cpf').attr('value', '');
+        }
+      }
+      $('#type').change(swapCpfCnpj);
+      swapCpfCnpj();
       
     });
 
@@ -47,65 +76,67 @@
 
 @main(title, nav = "signup", scripts) {
     
-    @helper.form(action = routes.SignUp.submit) {
+  @helper.form(action = routes.SignUp.submit) {
         
-        <fieldset>
-            <legend>Informações da conta</legend>
-            
-            @inputText(
-                signupForm("username"), 
-                '_label -> "Login", 
-                '_help -> "Escolha um login válido.",
-                '_error -> signupForm.globalError
-            )
-            
-            @inputPassword(
-                signupForm("password.main"), 
-                '_label -> "Senha",
-                '_help -> "A senha deve ter pelo menos 6 caracteres. "
-            )
-            
-            @inputPassword(
-                signupForm("password.confirm"), 
-                '_label -> "Confirme a senha",
-                '_help -> "Repita sua senha.",
-                '_error -> signupForm.error("password")
-            )
-            
-        </fieldset>
-        
-        <fieldset>
-            
-            <legend>Outras informações</legend>
-            
-            @select(
-                signupForm("country"), 
-                options = options(Countries.list),
-                '_default -> "--- Selecione o país ---",
-                '_label -> "País"
-            )
+    <fieldset>
+    <legend>Informações da conta</legend>
+    @inputText(
+      signupForm("username"), 
+      '_label -> "Login" 
+    )
+    @inputPassword(
+      signupForm("password.main"), 
+      '_label -> "Senha"
+    )
+    @inputPassword(
+      signupForm("password.confirm"), 
+      '_label -> "Confirme a senha",
+      '_error -> signupForm.error("password")
+    )
+    </fieldset>
+    
+    <fieldset>
+    <legend>Localização</legend>
+    @select(
+      signupForm("country"), 
+      options = options(Countries.list),
+      '_default -> "--- Selecione o país ---",
+      '_label -> "País"
+    )
+    @select(
+      signupForm("state"), 
+      options = Seq(),
+      '_label -> "Estado"
+    )
+    @select(
+      signupForm("city"), 
+      options = Seq(),
+      '_label -> "Cidade"
+    )
+    </fieldset>
 
-            @select(
-              signupForm("state"), 
-              options = Seq(),
-              '_default -> "--- Selecione o estado / prov�ncia ---",
-              '_label -> "Estado / Prov�ncia"
-            )
-            
-            @select(
-              signupForm("city"), 
-              options = Seq(),
-              '_default -> "--- Selecione a cidade ---",
-              '_label -> "Cidade"
-            )
-            
-        </fieldset>
+    <fieldset>
+    <legend>Outras informações</legend>
+    @select(
+      signupForm("type"), 
+      options = options(List("Pessoa Física", "Pessoa Jurídica")),
+      '_label -> "Tipo de cadastro"
+    )
+    @inputText(
+      signupForm("cnpj"), 
+      '_label -> "CNPJ"
+    )
+    @inputText(
+      signupForm("cpf"), 
+      '_label -> "CPF" 
+    )
+    </fieldset>
+    
+    <div class="actions">
+      <input type="submit" class="btn primary" value="Registrar">
+      <a href="@routes.Application.index" class="btn">Cancelar</a>
+    </div>
         
-        <div class="actions">
-            <input type="submit" class="btn primary" value="Registrar">
-            <a href="@routes.Application.index" class="btn">Cancelar</a>
-        </div>
-        
-    }
+  }
     
 }

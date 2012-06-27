@@ -2,10 +2,10 @@
 @fieldWrapper(field) {
   <select id="@field.name" name="@field.name" >
   @if(!field.emptyOption.isEmpty) {
-    <option class="blank" value="">@field.emptyOption</option>
+    <option class="blank" value="" >@field.emptyOption</option>
   }
   @field.options.map { option => 
-    <option value="@option">@option</option>
+    <option value="@option" @{if(field.inputValue == option) "selected=\"selected\""}>@option</option>
   }
   </select>
 }
